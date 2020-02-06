@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CS 439 Scorinator
 // @namespace    https://github.com/PatPositron
-// @version      0.1
+// @version      0.2
 // @description  adds a relative score column to all submissions
 // @author       pat
 // @match        https://www.cs.utexas.edu/~gheith/cs439_*_p*.html
@@ -24,7 +24,7 @@
         }
 
         for (let i = 0; i < subs.length; ++i) {
-            if (subs.eq(i).children()[0].innerText == sha) {
+            if (subs.eq(i).children()[0].innerText.includes(sha)) {
                 subs.eq(i).css("background-color", "#e6f3ff");
                 break;
             }
