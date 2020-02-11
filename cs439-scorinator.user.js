@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         CS 439 Scorinator
 // @namespace    https://github.com/PatPositron
-// @version      0.2
+// @version      0.3
 // @description  adds a relative score column to all submissions
 // @author       pat
 // @match        https://www.cs.utexas.edu/~gheith/cs439_*_p*.html
@@ -18,13 +18,13 @@
     }
 
     function promptForSha(subs) {
-        let sha = prompt("Please enter your code sha").trim();
-        if (sha == null || sha == "") {
+        let sha = prompt("Please enter your code sha");
+        if (sha == null || sha.trim() == "") {
             return;
         }
 
         for (let i = 0; i < subs.length; ++i) {
-            if (subs.eq(i).children()[0].innerText.includes(sha)) {
+            if (subs.eq(i).children()[0].innerText.includes(sha.trim())) {
                 subs.eq(i).css("background-color", "#e6f3ff");
                 break;
             }
@@ -53,7 +53,7 @@
 
     function displayScores(subs) {
         let prof = findProf(subs);
-        let profScore = scoreSubmission(subs.eq(prof));
+        let profScore = prof == null ? 0 : scoreSubmission(subs.eq(prof));
         for (let i = 3; i < subs.length; i++) {
             if (i == prof) {
                 subs.eq(i).append("<td style=\"float:right;font-family:monospace;font-size:1.3em;\">" + profScore + "</td>");
