@@ -76,8 +76,10 @@
       });
 
       let previewCss = 'linear-gradient(90deg,';
-      previewCss += cssStops.map(s => 'rgb(' + s[0] + ',' + s[1] + ',' + s[2] + ') ' + s[3] + '%').join(',');
-      previewCss += ")"
+      previewCss += cssStops
+        .map(s => 'rgb(' + s[0] + ',' + s[1] + ',' + s[2] + ') ' + s[3] + '%')
+        .join(',');
+      previewCss += ')';
       $preview.css('background-image', previewCss);
 
       let output = '// ' + document.location.href + '\n';
