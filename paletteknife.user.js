@@ -25,25 +25,7 @@
     return original != 0 && result == 0 ? 1 : result;
   }
 
-  ////////////////////////////
-
-  let $mainTd = $('td.main');
-  $mainTd.html(
-    $mainTd.html() +
-      '<button id="paletteknife">convert gradient</button>' +
-      '<br>' +
-      '<input id="palettegamma" type="checkbox" checked="true"/><label for="palettegamma">gamma</label>' +
-      '<br>' +
-      '<div id="palettepreview" style="width:340px;height:36px;border:1px solid black;"></div>' +
-      '<br>' +
-      '<textarea id="paletteresult" style="display:none;width:700px;height:700px;"></textarea>'
-  );
-
-  let $result = $('#paletteresult');
-  let $gamma = $('#palettegamma');
-  let $preview = $('#palettepreview');
-
-  $('#paletteknife').click(function() {
+  function convert() {
     let gradient = document.location.href.match(/([^\/]+).png.index.html/)[1];
 
     $.get('../' + gradient + '.c3g', function(css) {
@@ -71,32 +53,44 @@
           location++;
         }
 
-        stops.push([location, r, g, b]);
+        stops.push([Math.round(nums[4] * 10) / 1000, r, g, b]);
         cssStops.push([r, g, b, nums[4]]);
       });
 
       let previewCss = 'linear-gradient(90deg,';
-      previewCss += cssStops
-        .map(s => 'rgb(' + s[0] + ',' + s[1] + ',' + s[2] + ') ' + s[3] + '%')
-        .join(',');
+      previewCss += cssStops.map(s => 'rgb(' + s[0] + ',' + s[1] + ',' + s[2] + ') ' + s[3] + '%').join(',');
       previewCss += ')';
       $preview.css('background-image', previewCss);
 
       let output = '// ' + document.location.href + '\n';
-      output +=
-        '// converted with gammas (' +
-        rGamma +
-        ', ' +
-        gGamma +
-        ', ' +
-        bGamma +
-        ')\n';
-      output += gradient + ' = new Gradient(g, [\n';
+      output += '// converted with gammas (' + rGamma + ', ' + gGamma + ', ' + bGamma + ')\n';
+      output += 'public static ' + gradient.replace(/[^A-Za-z0-9]/g, '_').toUpperCase() + ' = [\n';
       output += stops.map(s => '  [' + s.join(', ') + ']').join(',\n');
-      output += '\n]);';
+      output += '\n];';
 
       $result.text(output);
       $result.show();
     });
-  });
+  }
+
+  ////////////////////////////
+
+  let $mainTd = $('td.main');
+  $mainTd.html(
+    $mainTd.html() +
+      '<button id="paletteknife">convert gradient</button>' +
+      '<br>' +
+      '<input id="palettegamma" type="checkbox" checked="true"/><label for="palettegamma">gamma</label>' +
+      '<br>' +
+      '<div id="palettepreview" style="width:340px;height:36px;border:1px solid black;"></div>' +
+      '<br>' +
+      '<textarea id="paletteresult" style="display:none;width:700px;height:700px;"></textarea>'
+  );
+
+  let $result = $('#paletteresult');
+  let $gamma = $('#palettegamma');
+  let $preview = $('#palettepreview');
+
+  $('#paletteknife').click(convert);
+  $gamma.click(convert);
 })();
