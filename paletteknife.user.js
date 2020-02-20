@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PaletteKnife for p5 gradient
 // @namespace    https://github.com/PatPositron
-// @version      0.2
+// @version      0.3
 // @description
 // @author       pat
 // @match        http://soliton.vm.bytemark.co.uk/pub/cpt-city/*.png.index.html
@@ -86,7 +86,7 @@
       '<br>' +
       '<div id="palettepreview" style="width:340px;height:36px;border:1px solid black;"></div>' +
       '<br>' +
-      '<textarea id="paletteresult" style="display:none;width:700px;height:700px;"></textarea>'
+      '<textarea id="paletteresult" style="display:none;width:340px;height:700px;"></textarea>'
   );
 
   let $result = $('#paletteresult');
