@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         PaletteKnife for p5 gradient
 // @namespace    https://github.com/PatPositron
-// @version      0.1
+// @version      0.2
 // @description
 // @author       pat
 // @match        http://soliton.vm.bytemark.co.uk/pub/cpt-city/*.png.index.html
@@ -63,7 +63,9 @@
       $preview.css('background-image', previewCss);
 
       let output = '// ' + document.location.href + '\n';
-      output += '// converted with gammas (' + rGamma + ', ' + gGamma + ', ' + bGamma + ')\n';
+      if ($gamma.is(':checked')) {
+        output += '// converted with gammas (' + rGamma + ', ' + gGamma + ', ' + bGamma + ')\n';
+      }
       output += 'public static ' + gradient.replace(/[^A-Za-z0-9]/g, '_').toUpperCase() + ' = [\n';
       output += stops.map(s => '  [' + s.join(', ') + ']').join(',\n');
       output += '\n];';
